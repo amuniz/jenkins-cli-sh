@@ -1,0 +1,25 @@
+#!/bin/bash
+file="./cli.properties"
+
+if [ -f "$file" ]
+then
+  echo "Using cli.properties file..."
+
+  while IFS='=' read -r key value
+  do
+    key=$(echo $key | tr '.' '_')
+    eval "${key}='${value}'"
+  done < "$file"
+
+  echo "User       = " $user
+  echo "Token      = " $token
+  echo "URL        = " $url
+  echo ""
+else
+  echo "$file not found."
+fi
+
+if [ ! -f jenkins-cli.jar ]; then
+  wget $url/jnlpJars/jenkins-cli.jar
+fi
+java -jar jenkins-cli.jar -noKeyAuth -auth $user:$token -s $url/ $* | python -m json.tool
