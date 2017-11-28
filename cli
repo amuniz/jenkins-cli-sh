@@ -26,4 +26,4 @@ fi
 if [ ! -f jenkins-cli.jar ]; then
   wget $url/jnlpJars/jenkins-cli.jar
 fi
-java -jar jenkins-cli.jar -noKeyAuth -auth $user:$token -s $url/ $* | python -m json.tool
+java -jar jenkins-cli.jar -noKeyAuth -auth $user:$token -s $url/ "$@" | python -m json.tool
